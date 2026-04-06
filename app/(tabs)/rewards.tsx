@@ -5,7 +5,7 @@ import { FlatList, Text, View } from "react-native";
 export default function TabTwoScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const item = ({ item }: { item: Reward }) => (
-    <View className="bg-[#FFE3D1] p-6">
+    <View className="bg-[#FFE3D1] p-2">
       <Text className="text-lg font-bold text-[#9B3F00]">{item.title}</Text>
       <Text className="text-sm text-[#7F512E]">{item.description}</Text>
     </View>

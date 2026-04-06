@@ -38,7 +38,9 @@ export default function TabLayout() {
               <Pressable style={{ marginRight: 15 }}>
                 {({ pressed }) => (
                   <SymbolView
-                    name={{ ios: "info.circle", android: "info", web: "info" }}
+                    name={{
+                      web: "access_alarm",
+                    }}
                     size={25}
                     style={{ opacity: pressed ? 0.5 : 1 }}
                   />
@@ -57,7 +59,7 @@ export default function TabLayout() {
               name={{
                 ios: "chevron.left.forwardslash.chevron.right",
                 android: "trophy",
-                web: "code",
+                web: "trophy",
               }}
               tintColor={color}
               size={28}
@@ -71,7 +73,7 @@ export default function TabLayout() {
           title: "Profile",
           tabBarIcon: ({ color }) => (
             <SymbolView
-              name={{ android: "person" }}
+              name={{ android: "person", web: "person" }}
               tintColor={color}
               size={28}
             />
