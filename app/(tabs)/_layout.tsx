@@ -25,7 +25,7 @@ export default function TabLayout() {
               name={{
                 ios: "chevron.left.forwardslash.chevron.right",
                 android: "cinematic_blur",
-                web: "code",
+                web: "cinematic_blur",
               }}
               size={28}
             />
@@ -39,7 +39,7 @@ export default function TabLayout() {
                 {({ pressed }) => (
                   <SymbolView
                     name={{
-                      web: "access_alarm",
+                      web: "menu",
                     }}
                     size={25}
                     style={{ opacity: pressed ? 0.5 : 1 }}

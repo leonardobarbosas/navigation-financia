@@ -1,12 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
 
-const ThirdScreen = () => {
+const ProfileScreen = () => {
   return (
     <View>
       <Text>ThirdScreen</Text>
     </View>
   );
 };
-export default ThirdScreen;
+export default ProfileScreen;
 
-const styles = StyleSheet.create({});
