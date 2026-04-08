@@ -1,10 +1,17 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+  View,
+  TextInput,
+} from "react-native";
 
 const IndexScreen = () => {
   const [loading, setLoading] = useState(true);
+  const [name, setName] = useState("");
 
   useEffect(() => {
     async function checkOnboard() {
@@ -29,7 +36,7 @@ const IndexScreen = () => {
   }, []);
 
   async function join() {
-    const data = { isDone: true, doneAt: Date.now() };
+    const data = { name: name, isDone: true, doneAt: Date.now() };
 
     await AsyncStorage.setItem("onboard", JSON.stringify(data));
 
@@ -48,6 +55,12 @@ const IndexScreen = () => {
     <View className="flex-1 justify-evenly items-center bg-[#fff4ef]">
       <Text className="text-3xl">Seja bem-vindo</Text>
       <Text>Sua jornada de recompensas comeca aqui.</Text>
+      <TextInput
+        value={name}
+        onChangeText={setName}
+        placeholder="Digite seu nome"
+        className="border border-gray-300 rounded-2xl p-4 bg-white"
+      />
       <TouchableOpacity onPress={join} className="bg-[#9B3F00] rounded-xl p-2">
         <Text className="text-white text-2xl">Entrar</Text>
       </TouchableOpacity>
