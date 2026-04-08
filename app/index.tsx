@@ -1,17 +1,35 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
-  TextInput,
 } from "react-native";
+import z from "zod";
+
+const onboardSchema = z.object({
+  name: z.string().min(2, "O nome é obrigatório"),
+  email: z.email("Informe um email valido"),
+});
+
+type OnboardInput = z.infer<typeof onboardSchema>;
 
 const IndexScreen = () => {
   const [loading, setLoading] = useState(true);
-  const [name, setName] = useState("");
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<OnboardInput>({
+    defaultValues: { name: "", email: "" },
+    resolver: zodResolver(onboardSchema),
+  });
 
   useEffect(() => {
     async function checkOnboard() {
@@ -35,8 +53,8 @@ const IndexScreen = () => {
     checkOnboard();
   }, []);
 
-  async function join() {
-    const data = { name: name, isDone: true, doneAt: Date.now() };
+  async function login({ name, email }: OnboardInput) {
+    const data = { name: name, email, isDone: true, doneAt: Date.now() };
 
     await AsyncStorage.setItem("onboard", JSON.stringify(data));
 
@@ -45,26 +63,64 @@ const IndexScreen = () => {
 
   if (loading) {
     return (
-      <View className="flex-1 justify-evenly items-center bg-[#fff4ef]">
-        <ActivityIndicator color={"#9b3f00"} size={48} />
+      <View className="flex-1 justify-center items-center gap-16 bg-[#fff4ef]">
+        <ActivityIndicator color={"#9B3F00"} size={48} />
       </View>
     );
   }
 
   return (
-    <View className="flex-1 justify-evenly items-center bg-[#fff4ef]">
-      <Text className="text-3xl">Seja bem-vindo</Text>
-      <Text>Sua jornada de recompensas comeca aqui.</Text>
-      <TextInput
-        value={name}
-        onChangeText={setName}
-        placeholder="Digite seu nome"
-        className="border border-gray-300 rounded-2xl p-4 bg-white"
-      />
-      <TouchableOpacity onPress={join} className="bg-[#9B3F00] rounded-xl p-2">
-        <Text className="text-white text-2xl">Entrar</Text>
+    <View className="flex-1 justify-center items-center gap-16 bg-[#fff4ef]">
+      <Text className="text-4xl">Seja bem-vindo</Text>
+      <Text className="text-lg text-center">
+        Sua jornada de recompensas comeca aqui.
+      </Text>
+      <View className="gap-4">
+        <View>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                placeholder="Digite seu nome"
+                className="border border-gray-300 rounded-2xl p-4 bg-white"
+              />
+            )}
+            name="name"
+          />
+          {errors.name && (
+            <Text className="text-red-500">{errors.name.message}</Text>
+          )}
+        </View>
+        <View>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                placeholder="Digite seu e-mail"
+                className="border border-gray-300 rounded-2xl p-4 bg-white"
+              />
+            )}
+            name="email"
+          />
+          {errors.email && (
+            <Text className="text-red-500">{errors.email.message}</Text>
+          )}
+        </View>
+      </View>
+      <TouchableOpacity
+        onPress={handleSubmit(login)}
+        className="text-2xl bg-[#9B3F00] px-6 py-3 rounded-2xl"
+      >
+        <Text className="text-white">Entrar</Text>
       </TouchableOpacity>
     </View>
   );
 };
+
 export default IndexScreen;
