@@ -1,5 +1,7 @@
 import { useSession } from "@/context/SessionContext";
 import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
+import { useEffect } from "react";
 import {
   Image,
   ScrollView,
@@ -12,6 +14,27 @@ import {
 export default function TabOneScreen() {
   const { currentUser } = useSession();
 
+  useEffect(() => {
+    async function loadCurrentProgram() {
+      console.log("ok");
+      try {
+        const responseAxios = await axios.get(
+          "http://10.3.43.100:3000/v1/usuarios/123/programas/ultimo-selo"
+        );
+        console.log("axios:", responseAxios.data);
+        const response = await fetch(
+          "http://10.3.43.100:3000/v1/usuarios/123/programas/ultimo-selo"
+        );
+        console.log("Resposta", await response.text());
+        const data = await response.json();
+        console.log("Progresso do usuário:", data);
+      } catch (error) {
+        console.error("Erro ao buscar progresso do usuário:", error);
+      }
+    }
+
+    loadCurrentProgram();
+  }, []);
   return (
     <ScrollView className="flex-1 bg-[#FFF4EF]">
       <View className="p-4 pt-8 gap-8">
