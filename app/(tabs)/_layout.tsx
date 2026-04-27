@@ -1,13 +1,19 @@
-import { Link, Tabs } from "expo-router";
+import { Link, Redirect, Tabs } from "expo-router";
 import { SymbolView } from "expo-symbols";
 import React from "react";
 import { Pressable } from "react-native";
 
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { useColorScheme } from "@/components/useColorScheme";
+import { useSession } from "@/context/SessionContext";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { isAuthenticated } = useSession();
+
+  if (!isAuthenticated) {
+    return <Redirect href={"/login"} />;
+  }
 
   return (
     <Tabs
@@ -25,7 +31,7 @@ export default function TabLayout() {
               name={{
                 ios: "chevron.left.forwardslash.chevron.right",
                 android: "cinematic_blur",
-                web: "cinematic_blur",
+                web: "code",
               }}
               size={28}
             />
@@ -38,9 +44,7 @@ export default function TabLayout() {
               <Pressable style={{ marginRight: 15 }}>
                 {({ pressed }) => (
                   <SymbolView
-                    name={{
-                      web: "menu",
-                    }}
+                    name={{ ios: "info.circle", android: "info", web: "info" }}
                     size={25}
                     style={{ opacity: pressed ? 0.5 : 1 }}
                   />
@@ -59,7 +63,7 @@ export default function TabLayout() {
               name={{
                 ios: "chevron.left.forwardslash.chevron.right",
                 android: "trophy",
-                web: "trophy",
+                web: "code",
               }}
               tintColor={color}
               size={28}
@@ -73,7 +77,7 @@ export default function TabLayout() {
           title: "Profile",
           tabBarIcon: ({ color }) => (
             <SymbolView
-              name={{ android: "person", web: "person" }}
+              name={{ android: "person" }}
               tintColor={color}
               size={28}
             />

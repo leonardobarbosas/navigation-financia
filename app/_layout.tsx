@@ -6,6 +6,7 @@ import "react-native-reanimated";
 import "../global.css";
 
 import { useColorScheme } from "@/components/useColorScheme";
+import { SessionContextProvider } from "@/context/SessionContext";
 import { StatusBar } from "expo-status-bar";
 
 export {
@@ -43,7 +44,9 @@ export default function RootLayout() {
 
   return (
     <>
-      <RootLayoutNav />
+      <SessionContextProvider>
+        <RootLayoutNav />
+      </SessionContextProvider>
       <StatusBar style="dark" />
     </>
   );
@@ -57,6 +60,7 @@ function RootLayoutNav() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+      <Stack.Screen name="login" options={{ headerShown: false }} />
     </Stack>
   );
 }

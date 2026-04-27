@@ -1,3 +1,4 @@
+import { useSession } from "@/context/SessionContext";
 import { Ionicons } from "@expo/vector-icons";
 import {
   Image,
@@ -9,12 +10,14 @@ import {
 } from "react-native";
 
 export default function TabOneScreen() {
+  const { currentUser } = useSession();
+
   return (
     <ScrollView className="flex-1 bg-[#FFF4EF]">
       <View className="p-4 pt-8 gap-8">
         <View>
           <Text className="text-4xl font-extrabold text-[#9B3F00]">
-            Seus Carimbos
+            Seus Carimbos, {currentUser?.name}
           </Text>
           <Text className="text-lg text-[#7F512E]">
             Faltam apenas 3 selos para o prêmio!
